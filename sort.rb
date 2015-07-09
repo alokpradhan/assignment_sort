@@ -1,13 +1,11 @@
 require 'benchmark'
 
-
 def insertion_sort(arr)
   arr.each_with_index do |ele, i|
     insert(arr, i-1, ele)
   end
   arr
 end
-
 
 def insert(array, right_index, value)
     # value is the value of array[right_index + 1]
@@ -22,7 +20,6 @@ def insert(array, right_index, value)
         array[i+1] = array[i]
         i -= 1
     end
-
     # insert the actual element
     array[i+1] = value;
 end
@@ -107,18 +104,18 @@ def suppress_output
   retval
 end
 
-def quick_sort(arr)
+def quick_sort(arr, pivot_index = 0)
   if arr.length < 2
     return arr
   else
-    pivot_index = partition_array(arr)
-    quick_sort(arr[0..pivot_index-1])
-    quick_sort(arr[pivot_index+1..-1])
+    pivot_index = partition_array_2(arr)
+    #quick_sort(arr[0..pivot_index-1], pivot_index)
+    quick_sort(arr[pivot_index+1..-1], pivot_index)
   end
 end
 
 def partition_array(arr, pivot_index = 0)
-  wall = 0
+  wall = 0  #we either change the wall and move it forward, or we start from a smaller array
   pivot = arr[-1]
   puts pivot  #= 53
   (0..(arr.length-1)).each do |i|
@@ -136,6 +133,31 @@ def partition_array(arr, pivot_index = 0)
     #arr[wall+1], arr[-1] = arr[-1], arr[wall+1]
     #puts arr[wall]
     pivot_index = wall
+end
+
+
+def partition_array_2(arr)
+  wall = 0
+  pivot = arr[-1]
+  arr.each_with_index do |current_element, i|
+    if current_element < pivot
+      current_element, arr[wall] = arr[wall], current_element
+      wall +=1
+      p wall
+      p arr
+      p current_element
+    elsif current_element == pivot
+      current_element, arr[wall] = arr[wall], current_element
+      # move the wall down
+      wall +=1
+      p wall
+      p current_element
+    end
+  end
+    #p arr
+    #arr[wall+1], arr[-1] = arr[-1], arr[wall+1]
+    #puts arr[wall]
+  wall
 end
 
 # 1. Pick pivot (last element)
